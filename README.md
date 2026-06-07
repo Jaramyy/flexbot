@@ -8,7 +8,7 @@ This repository now includes a static homepage at `/index.html` so it can be hos
 2. Go to **Settings** → **Pages**.
 3. Under **Build and deployment**, choose:
    - **Source:** `Deploy from a branch`
-   - **Branch:** `copilot/host-website-on-github` (or your default branch)
+   - **Branch:** your default branch (for example, `main`)
    - **Folder:** `/ (root)`
 4. Save.
 

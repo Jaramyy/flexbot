@@ -590,12 +590,12 @@ let lang = 'th';
 let interests = [], budget = '', rating = 0, count = 0;
 
 // ── PASTE YOUR APPS SCRIPT WEB APP URL HERE ──────────────────
-const SHEET_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzi5klzohsfbBuufwtH3LftzPdYxN3TVqx6mtIOWF4/dev';
 // ─────────────────────────────────────────────────────────────
 
 // Fetch real count from Google Sheets on page load
 async function fetchCount() {
-  if (SHEET_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+  if (SHEET_URL === 'https://script.google.com/macros/s/AKfycbzi5klzohsfbBuufwtH3LftzPdYxN3TVqx6mtIOWF4/dev') {
     count = 61; // placeholder while URL not set
     renderCount();
     return;

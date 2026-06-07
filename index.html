@@ -587,8 +587,39 @@ const T = {
 };
 
 let lang = 'th';
-let interests = [], budget = '', rating = 0, count = 61;
-const SHEET_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+let interests = [], budget = '', rating = 0, count = 0;
+
+// ── PASTE YOUR APPS SCRIPT WEB APP URL HERE ──────────────────
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzw8e6a5Mx2QubV0Zi1mek6-SDFn4Fx3pnb5wBoHbXdj2lXU7QKlM6kTVYfzxq5REmT/exec';
+// ─────────────────────────────────────────────────────────────
+
+// Fetch real count from Google Sheets on page load
+async function fetchCount() {
+  if (SHEET_URL === 'https://script.google.com/macros/s/AKfycbzw8e6a5Mx2QubV0Zi1mek6-SDFn4Fx3pnb5wBoHbXdj2lXU7QKlM6kTVYfzxq5REmT/exec') {
+    count = 61; // placeholder while URL not set
+    renderCount();
+    return;
+  }
+  try {
+    const res = await fetch(SHEET_URL, { method: 'GET' });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      count = data.count;
+      renderCount();
+    }
+  } catch (e) {
+    count = 61;
+    renderCount();
+  }
+}
+
+function renderCount() {
+  const d = T[lang];
+  const pc = document.getElementById('prog-count');
+  if (pc) pc.innerHTML = count + ' <span data-i="prog_label">' + d.prog_label + '</span>';
+  const fill = document.getElementById('prog-fill');
+  if (fill) fill.style.width = Math.min((count / 500) * 100, 100) + '%';
+}
 
 function setLang(l) {
   lang = l;
@@ -603,10 +634,7 @@ function setLang(l) {
     const key = el.getAttribute('data-placeholder-i');
     if (d[key]) el.placeholder = d[key];
   });
-  // update counter text
-  const pc = document.getElementById('prog-count');
-  if (pc) pc.innerHTML = count + ' <span data-i="prog_label">' + d.prog_label + '</span>';
-  // re-apply btn state
+  renderCount();
   const btn = document.getElementById('btn-sub');
   if (btn && !btn.disabled) btn.innerHTML = '<i class="ti ti-send" aria-hidden="true"></i> ' + d.btn_submit;
 }
@@ -628,28 +656,51 @@ async function submitForm() {
   const btn = document.getElementById('btn-sub');
   btn.disabled = true;
   btn.innerHTML = '<i class="ti ti-loader" aria-hidden="true"></i> ' + T[lang].submitting;
+
   const payload = {
     name: document.getElementById('f-name').value.trim(),
     contact: document.getElementById('f-contact').value.trim(),
     interests, budget, rating, lang,
     comment: document.getElementById('f-comment').value.trim()
   };
-  if (SHEET_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+
+  let newCount = count + 1;
+
+  if (SHEET_URL !== 'https://script.google.com/macros/s/AKfycbzw8e6a5Mx2QubV0Zi1mek6-SDFn4Fx3pnb5wBoHbXdj2lXU7QKlM6kTVYfzxq5REmT/exec') {
     try {
-      await fetch(SHEET_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-    } catch(e) { console.error(e); }
+      // Use no-cors for cross-origin; count update comes from subsequent GET
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      // Re-fetch actual count after short delay
+      setTimeout(async () => {
+        try {
+          const res = await fetch(SHEET_URL, { method: 'GET' });
+          const d2 = await res.json();
+          if (d2.status === 'ok') { count = d2.count; renderCount(); }
+        } catch(e) {}
+      }, 1500);
+    } catch (e) { console.error(e); }
   }
-  count++;
-  document.getElementById('prog-count').innerHTML = count + ' <span data-i="prog_label">' + T[lang].prog_label + '</span>';
-  document.getElementById('prog-fill').style.width = Math.min((count/500)*100,100) + '%';
+
+  count = newCount;
+  renderCount();
+
   const d = T[lang], iL = d.iLabels, bL = d.bLabels;
   const lines = [];
-  if (payload.name) lines.push(['ti-user',(lang==='th'?'ชื่อ':'Name')+': '+payload.name]);
-  if (payload.contact) lines.push(['ti-mail',(lang==='th'?'ติดต่อ':'Contact')+': '+payload.contact]);
-  if (interests.length) lines.push(['ti-heart',(lang==='th'?'สนใจ':'Interests')+': '+interests.map(k=>iL[k]).join(', ')]);
-  if (budget) lines.push(['ti-currency-baht',(lang==='th'?'งบ':'Budget')+': '+bL[budget]]);
-  if (rating) lines.push(['ti-star',(lang==='th'?'คะแนน':'Rating')+': '+'★'.repeat(rating)]);
-  document.getElementById('summary-box').innerHTML = lines.map(([ic,tx])=>`<div class="summary-item"><i class="ti ${ic}" aria-hidden="true"></i><span>${tx}</span></div>`).join('');
+  if (payload.name) lines.push(['ti-user', (lang==='th'?'ชื่อ':'Name')+': '+payload.name]);
+  if (payload.contact) lines.push(['ti-mail', (lang==='th'?'ติดต่อ':'Contact')+': '+payload.contact]);
+  if (interests.length) lines.push(['ti-heart', (lang==='th'?'สนใจ':'Interests')+': '+interests.map(k=>iL[k]).join(', ')]);
+  if (budget) lines.push(['ti-currency-baht', (lang==='th'?'งบ':'Budget')+': '+bL[budget]]);
+  if (rating) lines.push(['ti-star', (lang==='th'?'คะแนน':'Rating')+': '+'★'.repeat(rating)]);
+
+  document.getElementById('summary-box').innerHTML = lines.map(([ic,tx])=>
+    `<div class="summary-item"><i class="ti ${ic}" aria-hidden="true"></i><span>${tx}</span></div>`
+  ).join('');
+
   document.getElementById('form-view').style.display = 'none';
   const sv = document.getElementById('success-view');
   sv.style.display = 'block';
@@ -666,13 +717,19 @@ function resetF() {
 }
 
 function shareIt() {
-  count++;
-  document.getElementById('prog-count').innerHTML = count + ' <span data-i="prog_label">' + T[lang].prog_label + '</span>';
-  if (navigator.share) navigator.share({ title:'FlexBot One', text: lang==='th' ? 'Smart Fitness สำหรับคนคอนโด — AI Trainer + Motor Resistance ในกล่องเดียว!' : 'Smart Fitness for condo living — AI Trainer + Motor Resistance in one device!' });
+  if (navigator.share) navigator.share({
+    title: 'FlexBot One',
+    text: lang==='th'
+      ? 'Smart Fitness สำหรับคนคอนโด — AI Trainer + Motor Resistance ในกล่องเดียว!'
+      : 'Smart Fitness for condo living — AI Trainer + Motor Resistance in one device!'
+  });
 }
 
 const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
 document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+// Init
+fetchCount();
 </script>
 </body>
 </html>

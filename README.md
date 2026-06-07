@@ -14,4 +14,4 @@ This repository now includes a static homepage at `/index.html` so it can be hos
 
 After deployment, your site will be available at:
 
-`https://<your-github-username>.github.io/flexbot/`
+`https://<your-github-username>.github.io/<repository-name>/`

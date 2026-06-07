@@ -1,30 +1,678 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>flexbot</title>
-    <style>
-      :root {
-        color-scheme: light dark;
-      }
-      body {
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-        margin: 0;
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-      }
-      main {
-        text-align: center;
-        padding: 2rem;
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>flexbot</h1>
-      <p>This site is hosted with GitHub Pages.</p>
-    </main>
-  </body>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FlexBot One — Smart Fitness for Urban Living</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.22.0/dist/tabler-icons.min.css" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #EF9F27; --gold-dim: rgba(239,159,39,0.15); --gold-border: rgba(239,159,39,0.35);
+    --bg: #0a0a0a; --bg-2: #111111; --bg-3: #171717;
+    --text: #f5f1e8; --text-muted: rgba(245,241,232,0.45); --text-dim: rgba(245,241,232,0.2);
+    --border: rgba(255,255,255,0.07); --border-hover: rgba(255,255,255,0.15);
+    --r-sm: 8px; --r-md: 12px; --r-lg: 16px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+  /* LANG TOGGLE */
+  .lang-toggle {
+    display: flex; align-items: center; gap: 4px;
+    background: rgba(255,255,255,0.05);
+    border: 0.5px solid var(--border);
+    border-radius: 100px;
+    padding: 3px;
+  }
+  .lang-btn {
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+    color: var(--text-muted); padding: 4px 12px; border-radius: 100px;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .lang-btn.active { background: var(--gold); color: #1a0f00; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 60px;
+    background: rgba(10,10,10,0.88); backdrop-filter: blur(16px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 0.05em; color: var(--text); }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-cta {
+    background: var(--gold); color: #1a0f00; border: none; border-radius: var(--r-sm);
+    padding: 8px 18px; font-size: 13px; font-weight: 500; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+  }
+  .nav-cta:hover { background: #FAC775; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 6rem 2.5rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(239,159,39,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(239,159,39,0.04) 1px, transparent 1px);
+    background-size: 80px 80px; pointer-events: none;
+  }
+  .hero-bg-glow {
+    position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 600px;
+    background: radial-gradient(ellipse at center, rgba(239,159,39,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .early-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--gold-dim); border: 0.5px solid var(--gold-border); color: var(--gold);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 100px; margin-bottom: 2rem;
+  }
+  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: blink 2s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.2} }
+  .hero-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px,8vw,96px); line-height: 0.92; letter-spacing: 0.02em; margin-bottom: 1.5rem; }
+  .hero-headline .line2 { color: var(--gold); }
+  .hero-desc { font-size: 16px; color: var(--text-muted); font-weight: 300; line-height: 1.75; max-width: 400px; margin-bottom: 2rem; }
+  .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .btn-hero {
+    background: var(--gold); color: #1a0f00; border: none; border-radius: var(--r-sm);
+    padding: 14px 28px; font-size: 15px; font-weight: 500; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background 0.2s, transform 0.15s;
+  }
+  .btn-hero:hover { background: #FAC775; }
+  .btn-hero:active { transform: scale(0.97); }
+  .btn-ghost {
+    background: transparent; border: 0.5px solid var(--border-hover); border-radius: var(--r-sm);
+    padding: 14px 24px; font-size: 15px; color: var(--text-muted); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+  }
+  .btn-ghost:hover { border-color: var(--gold-border); color: var(--text); }
+  .hero-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border: 0.5px solid var(--border); border-radius: var(--r-md); overflow: hidden; margin-top: 1.5rem; }
+  .hstat { background: var(--bg-2); padding: 1.25rem 1rem; text-align: center; }
+  .hstat-num { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--gold); line-height: 1; }
+  .hstat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+  .device-card { position: relative; border-radius: var(--r-lg); overflow: hidden; border: 0.5px solid rgba(239,159,39,0.2); background: var(--bg-2); }
+  .device-card img { width: 100%; display: block; object-fit: cover; }
+  .device-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, transparent 100%); padding: 2rem 1.5rem 1.5rem; }
+  .spec-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .spec-chip { background: rgba(239,159,39,0.12); border: 0.5px solid rgba(239,159,39,0.3); color: var(--gold); font-size: 11px; font-weight: 500; letter-spacing: 0.06em; padding: 4px 12px; border-radius: 100px; }
+
+  /* STRIP */
+  .features-strip { border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); background: var(--bg-2); padding: 1.5rem 2.5rem; display: flex; gap: 3rem; align-items: center; overflow-x: auto; scrollbar-width: none; }
+  .features-strip::-webkit-scrollbar { display: none; }
+  .fstrip-item { display: flex; align-items: center; gap: 10px; white-space: nowrap; flex-shrink: 0; }
+  .fstrip-icon { width: 34px; height: 34px; border-radius: var(--r-sm); background: var(--gold-dim); border: 0.5px solid var(--gold-border); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 16px; }
+  .fstrip-text { font-size: 13px; color: var(--text-muted); }
+  .fstrip-text strong { display: block; font-size: 13px; font-weight: 500; color: var(--text); }
+
+  /* SECTIONS */
+  .section-wrap { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; }
+  .section-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); margin-bottom: 1rem; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(28px,4vw,40px); font-weight: 800; line-height: 1.15; margin-bottom: 1rem; max-width: 560px; }
+  .section-title em { font-style: normal; color: var(--gold); }
+  .section-body { font-size: 15px; color: var(--text-muted); line-height: 1.8; max-width: 520px; margin-bottom: 3rem; }
+  .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--border); border: 0.5px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+  .problem-card { background: var(--bg-2); padding: 1.75rem 1.5rem; }
+  .prob-icon { font-size: 22px; color: var(--gold); margin-bottom: 1rem; }
+  .prob-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .prob-desc { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+  .how-section { background: var(--bg-2); border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); }
+  .steps-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; margin-top: 3rem; }
+  .step-num { width: 52px; height: 52px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--gold); background: var(--gold-dim); border: 0.5px solid var(--gold-border); }
+  .step-title { font-size: 15px; font-weight: 500; margin: 1rem 0 0.5rem; }
+  .step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+
+  /* TABLE */
+  .compare-table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 14px; }
+  .compare-table th { text-align: left; padding: 12px 1rem; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); border-bottom: 0.5px solid var(--border); }
+  .compare-table th.highlight { color: var(--gold); }
+  .compare-table td { padding: 14px 1rem; border-bottom: 0.5px solid var(--border); color: var(--text-muted); font-size: 13px; }
+  .compare-table td:first-child { color: var(--text); font-weight: 500; }
+  .compare-table td.highlight { color: var(--text); font-weight: 500; }
+  .check { color: #4ade80; } .cross { color: rgba(245,241,232,0.2); }
+
+  /* FORM */
+  .feedback-section { border-top: 0.5px solid var(--border); }
+  .feedback-inner { max-width: 680px; margin: 0 auto; padding: 5rem 2.5rem; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.5rem; }
+  .interest-btn { background: var(--bg-2); border: 0.5px solid var(--border); border-radius: var(--r-md); padding: 1.25rem 1rem; cursor: pointer; text-align: left; transition: all 0.2s; color: var(--text); font-family: 'DM Sans', sans-serif; }
+  .interest-btn:hover { background: var(--gold-dim); border-color: var(--gold-border); }
+  .interest-btn.selected { background: var(--gold-dim); border-color: var(--gold); }
+  .ib-icon { font-size: 20px; color: var(--gold); margin-bottom: 8px; }
+  .ib-title { font-size: 13px; font-weight: 500; }
+  .ib-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+  .budget-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .bchip { background: var(--bg-2); border: 0.5px solid var(--border); border-radius: 100px; padding: 7px 16px; font-size: 13px; cursor: pointer; color: var(--text-muted); font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .bchip:hover,.bchip.sel { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+  .stars-row { display: flex; gap: 4px; margin-top: 10px; }
+  .sstar { font-size: 28px; cursor: pointer; color: var(--border-hover); background: none; border: none; font-family: inherit; transition: color 0.15s, transform 0.1s; padding: 0 2px; }
+  .sstar:hover { transform: scale(1.15); }
+  .sstar.lit { color: var(--gold); }
+  .field-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px; margin-top: 1.25rem; }
+  .field-input,.field-ta { width: 100%; background: var(--bg-2); border: 0.5px solid var(--border); border-radius: var(--r-sm); padding: 12px 16px; font-size: 14px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+  .field-input:focus,.field-ta:focus { border-color: var(--gold-border); }
+  .field-input::placeholder,.field-ta::placeholder { color: var(--text-dim); }
+  .field-ta { resize: vertical; min-height: 90px; }
+  .progress-section { margin: 1.5rem 0; }
+  .prog-row { display: flex; align-items: center; gap: 10px; }
+  .prog-bar { flex: 1; height: 3px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+  .prog-fill { height: 100%; background: var(--gold); border-radius: 3px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+  .prog-count { font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--gold); white-space: nowrap; }
+  .prog-target { font-size: 11px; color: var(--text-dim); white-space: nowrap; }
+  .submit-row { display: flex; gap: 10px; margin-top: 1.5rem; }
+  .btn-submit { flex: 1; background: var(--gold); color: #1a0f00; border: none; border-radius: var(--r-sm); padding: 15px 24px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s, transform 0.15s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-submit:hover { background: #FAC775; }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-share { background: var(--bg-2); border: 0.5px solid var(--border); border-radius: var(--r-sm); padding: 15px 20px; font-size: 14px; cursor: pointer; color: var(--text-muted); font-family: 'DM Sans', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+  .btn-share:hover { border-color: var(--border-hover); color: var(--text); }
+
+  /* SUCCESS */
+  #success-view { display: none; text-align: center; padding: 3rem 0; }
+  .success-ring { width: 72px; height: 72px; border-radius: 50%; background: var(--gold-dim); border: 0.5px solid var(--gold-border); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 30px; color: var(--gold); animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes pop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+  .success-title { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 0.04em; margin-bottom: 0.5rem; }
+  .success-sub { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-bottom: 2rem; }
+  .summary-box { background: var(--bg-2); border: 0.5px solid var(--gold-border); border-radius: var(--r-md); padding: 1.25rem 1.5rem; text-align: left; margin-bottom: 1.5rem; }
+  .summary-item { font-size: 13px; color: var(--text-muted); padding: 4px 0; display: flex; gap: 10px; }
+  .summary-item i { color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+
+  /* FOOTER */
+  footer { border-top: 0.5px solid var(--border); padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-dim); }
+  .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--text-muted); letter-spacing: 0.05em; }
+  .footer-brand span { color: var(--gold); }
+
+  /* ANIMATIONS */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .delay-1{transition-delay:0.1s} .delay-2{transition-delay:0.2s} .delay-3{transition-delay:0.3s} .delay-4{transition-delay:0.4s}
+
+  /* LANG TRANSITION */
+  [data-th], [data-en] { transition: opacity 0.25s ease; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 1.25rem; }
+    .nav-links { display: none; }
+    .hero { padding: 5rem 1.25rem 3rem; }
+    .hero-content { grid-template-columns: 1fr; gap: 2.5rem; }
+    .section-wrap { padding: 3rem 1.25rem; }
+    .feedback-inner { padding: 3rem 1.25rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .features-strip { padding: 1.25rem; gap: 2rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .nav-right { gap: 8px; }
+    .nav-cta { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">FLEX<span>BOT</span> ONE</div>
+  <div class="nav-links">
+    <a href="#features" data-i="nav_features">ฟีเจอร์</a>
+    <a href="#howto" data-i="nav_how">วิธีใช้งาน</a>
+    <a href="#compare" data-i="nav_compare">เปรียบเทียบ</a>
+    <a href="#feedback" data-i="nav_register">แจ้งความสนใจ</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('th')">🇹🇭 TH</button>
+      <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+    </div>
+    <button class="nav-cta" data-i="nav_cta" onclick="document.getElementById('feedback').scrollIntoView({behavior:'smooth'})">แจ้งความสนใจ</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bg-glow"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="early-tag fade-up visible">
+        <div class="live-dot"></div>
+        <span data-i="hero_tag">Early Access — Thailand 2025</span>
+      </div>
+      <h1 class="hero-headline fade-up visible delay-1">
+        SMART<br><span class="line2">FITNESS</span><br>IN A BOX
+      </h1>
+      <p class="hero-desc fade-up visible delay-2" data-i="hero_desc">
+        ออกกำลังกายแบบ AI Personal Trainer พร้อม Motor Haptic Resistance สูงสุด 120 lbs — ออกแบบสำหรับคอนโดและอพาร์ตเมนต์ในประเทศไทย
+      </p>
+      <div class="hero-actions fade-up visible delay-3">
+        <button class="btn-hero" data-i="hero_cta" onclick="document.getElementById('feedback').scrollIntoView({behavior:'smooth'})">แจ้งความสนใจ Early Access</button>
+        <button class="btn-ghost" onclick="document.getElementById('howto').scrollIntoView({behavior:'smooth'})">
+          <i class="ti ti-player-play" aria-hidden="true"></i>
+          <span data-i="hero_watch">ดูวิธีทำงาน</span>
+        </button>
+      </div>
+      <div class="hero-stats fade-up visible delay-4">
+        <div class="hstat">
+          <div class="hstat-num">120<small style="font-size:16px;font-family:'DM Sans',sans-serif;font-weight:300">lbs</small></div>
+          <div class="hstat-label" data-i="stat1">แรงต้านสูงสุด</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">AI</div>
+          <div class="hstat-label" data-i="stat2">Personal Coach</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">0.5<small style="font-size:16px;font-family:'DM Sans',sans-serif;font-weight:300">m²</small></div>
+          <div class="hstat-label" data-i="stat3">พื้นที่ที่ใช้</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right fade-up visible delay-2">
+      <div class="device-card">
+        <img src="319A20E7-507E-4BB6-9796-403CA582955E.jpeg" alt="FlexBot One device" />
+        <div class="device-overlay">
+          <div class="spec-chips">
+            <span class="spec-chip">Resistance: 120 lbs</span>
+            <span class="spec-chip">Counts: 15</span>
+            <span class="spec-chip">Power: 85%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES STRIP -->
+<div class="features-strip" id="features">
+  <div class="fstrip-item">
+    <div class="fstrip-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+    <div class="fstrip-text"><strong data-i="fs1t">Motor-Haptic Resistance</strong><span data-i="fs1s">ปรับแรงต้านแม่นยำทุก Rep</span></div>
+  </div>
+  <div class="fstrip-item">
+    <div class="fstrip-icon"><i class="ti ti-brain" aria-hidden="true"></i></div>
+    <div class="fstrip-text"><strong data-i="fs2t">AI Personal Trainer</strong><span data-i="fs2s">วิเคราะห์และปรับโปรแกรมให้คุณ</span></div>
+  </div>
+  <div class="fstrip-item">
+    <div class="fstrip-icon"><i class="ti ti-chart-line" aria-hidden="true"></i></div>
+    <div class="fstrip-text"><strong data-i="fs3t">Real-time Analytics</strong><span data-i="fs3s">ติดตามพัฒนาการทุกเซสชัน</span></div>
+  </div>
+  <div class="fstrip-item">
+    <div class="fstrip-icon"><i class="ti ti-home" aria-hidden="true"></i></div>
+    <div class="fstrip-text"><strong data-i="fs4t">Condo-First Design</strong><span data-i="fs4s">ใช้พื้นที่เพียง 0.5 ตร.ม.</span></div>
+  </div>
+  <div class="fstrip-item">
+    <div class="fstrip-icon"><i class="ti ti-refresh" aria-hidden="true"></i></div>
+    <div class="fstrip-text"><strong data-i="fs5t">Energy Recovery</strong><span data-i="fs5s">แปลงพลังงานกลับเป็นไฟฟ้า</span></div>
+  </div>
+</div>
+
+<!-- PROBLEM SECTION -->
+<section class="fade-up">
+  <div class="section-wrap">
+    <div class="section-eyebrow" data-i="prob_eye">ปัญหาที่เราแก้</div>
+    <h2 class="section-title" data-i="prob_title">คนเมืองไทยออกกำลังกายได้<em>ยากขึ้น</em>ทุกปี</h2>
+    <p class="section-body" data-i="prob_body">พื้นที่คอนโดเล็กลง ค่าฟิตเนสแพงขึ้น อุปกรณ์ Smart Fitness จากต่างประเทศไม่ตอบโจทย์คนไทย — FlexBot One คือคำตอบที่ออกแบบมาเพื่อคุณ</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="prob-icon"><i class="ti ti-home" aria-hidden="true"></i></div>
+        <div class="prob-title" data-i="p1t">พื้นที่จำกัด</div>
+        <div class="prob-desc" data-i="p1d">คอนโดและอพาร์ตเมนต์ไม่มีพื้นที่สำหรับอุปกรณ์ออกกำลังกายขนาดใหญ่</div>
+      </div>
+      <div class="problem-card">
+        <div class="prob-icon"><i class="ti ti-clock" aria-hidden="true"></i></div>
+        <div class="prob-title" data-i="p2t">เวลาไม่พอ</div>
+        <div class="prob-desc" data-i="p2d">คนทำงานไม่มีเวลาไปฟิตเนส การออกกำลังกายที่บ้านจึงเป็นทางเลือกเดียว</div>
+      </div>
+      <div class="problem-card">
+        <div class="prob-icon"><i class="ti ti-user-question" aria-hidden="true"></i></div>
+        <div class="prob-title" data-i="p3t">ขาดผู้แนะนำ</div>
+        <div class="prob-desc" data-i="p3d">ผู้เริ่มต้นไม่มั่นใจ ไม่รู้วิธีฝึกที่ถูกต้อง และไม่สามารถวัดผลได้</div>
+      </div>
+      <div class="problem-card">
+        <div class="prob-icon"><i class="ti ti-currency-baht" aria-hidden="true"></i></div>
+        <div class="prob-title" data-i="p4t">ราคาสูงเกินไป</div>
+        <div class="prob-desc" data-i="p4d">Tonal / Speediance ราคาแพงมาก ไม่ตอบโจทย์ตลาดไทยและไม่ได้ออกแบบสำหรับเอเชีย</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section fade-up" id="howto">
+  <div class="section-wrap">
+    <div class="section-eyebrow" data-i="how_eye">วิธีทำงาน</div>
+    <h2 class="section-title" data-i="how_title">เทคโนโลยีที่<em>ปรับตัว</em>ตามคุณ</h2>
+    <div class="steps-row">
+      <div class="step-item">
+        <div class="step-num"><i class="ti ti-user" aria-hidden="true"></i></div>
+        <div class="step-title" data-i="s1t">ตั้งค่าโปรไฟล์</div>
+        <div class="step-desc" data-i="s1d">AI ประเมินระดับฟิตเนสเริ่มต้นของคุณ และสร้างโปรแกรมการฝึกส่วนตัว</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+        <div class="step-title" data-i="s2t">เชื่อมสาย ออกกำลังกาย</div>
+        <div class="step-desc" data-i="s2d">Motor ปรับแรงต้านแบบ Real-time ตามท่าทางและความสามารถของคุณในขณะนั้น</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num"><i class="ti ti-chart-bar" aria-hidden="true"></i></div>
+        <div class="step-title" data-i="s3t">วิเคราะห์ผล</div>
+        <div class="step-desc" data-i="s3d">หน้าจอแสดง Rep, แรงต้าน, Calories และพลังงานที่ผลิตได้แบบ Live</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num"><i class="ti ti-refresh" aria-hidden="true"></i></div>
+        <div class="step-title" data-i="s4t">ปรับโปรแกรมอัตโนมัติ</div>
+        <div class="step-desc" data-i="s4d">AI เรียนรู้จากข้อมูลการฝึกและอัปเดตโปรแกรมใหม่ทุกสัปดาห์</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="fade-up" id="compare">
+  <div class="section-wrap">
+    <div class="section-eyebrow" data-i="cmp_eye">เปรียบเทียบ</div>
+    <h2 class="section-title" data-i="cmp_title">ทำไมต้อง<em>FlexBot One</em>?</h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th data-i="cmp_h1">ฟีเจอร์</th>
+          <th data-i="cmp_h2">ฟิตเนสทั่วไป</th>
+          <th>Tonal / Speediance</th>
+          <th class="highlight">FlexBot One</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td data-i="cr1">เหมาะกับคอนโด</td><td class="cross">✗</td><td class="cross">✗</td><td class="highlight check">✓</td></tr>
+        <tr><td data-i="cr2">AI Personal Trainer</td><td class="cross">✗</td><td class="check">✓</td><td class="highlight check">✓</td></tr>
+        <tr><td data-i="cr3">ราคาเข้าถึงได้</td><td class="check">✓</td><td class="cross">✗</td><td class="highlight check">✓</td></tr>
+        <tr><td data-i="cr4">รองรับภาษาไทย</td><td class="cross">✗</td><td class="cross">✗</td><td class="highlight check">✓</td></tr>
+        <tr><td data-i="cr5">Energy Recovery</td><td class="cross">✗</td><td class="cross">✗</td><td class="highlight check">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FEEDBACK FORM -->
+<section class="feedback-section" id="feedback">
+  <div class="feedback-inner">
+    <div class="section-eyebrow">Early Access</div>
+    <h2 class="section-title" style="max-width:100%" data-i="form_title">แจ้งความสนใจ<br><em>รับข่าวสารก่อนใคร</em></h2>
+    <p class="section-body" style="margin-bottom:2rem" data-i="form_sub">กรอกข้อมูลด้านล่าง ทีมงานจะติดต่อกลับเมื่อ FlexBot One พร้อมจำหน่ายในประเทศไทย</p>
+
+    <div id="form-view">
+      <div class="field-label" data-i="fl_interest">คุณสนใจด้านไหนมากที่สุด?</div>
+      <div class="form-grid">
+        <button class="interest-btn" onclick="toggleInt(this,'space')">
+          <div class="ib-icon"><i class="ti ti-home" aria-hidden="true"></i></div>
+          <div class="ib-title" data-i="ib1t">ประหยัดพื้นที่</div>
+          <div class="ib-sub" data-i="ib1s">เหมาะกับคอนโด</div>
+        </button>
+        <button class="interest-btn" onclick="toggleInt(this,'ai')">
+          <div class="ib-icon"><i class="ti ti-brain" aria-hidden="true"></i></div>
+          <div class="ib-title" data-i="ib2t">AI Trainer</div>
+          <div class="ib-sub" data-i="ib2s">ปรับโปรแกรมอัตโนมัติ</div>
+        </button>
+        <button class="interest-btn" onclick="toggleInt(this,'resistance')">
+          <div class="ib-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+          <div class="ib-title" data-i="ib3t">Smart Resistance</div>
+          <div class="ib-sub" data-i="ib3s">120 lbs Motor Haptic</div>
+        </button>
+        <button class="interest-btn" onclick="toggleInt(this,'tracking')">
+          <div class="ib-icon"><i class="ti ti-chart-line" aria-hidden="true"></i></div>
+          <div class="ib-title" data-i="ib4t">ติดตามผลลัพธ์</div>
+          <div class="ib-sub" data-i="ib4s">วิเคราะห์ Realtime</div>
+        </button>
+      </div>
+
+      <div class="field-label" data-i="fl_budget">งบประมาณที่พิจารณา</div>
+      <div class="budget-chips">
+        <button class="bchip" onclick="pickBudget(this,'<10k')" data-i="b1">ต่ำกว่า 10,000฿</button>
+        <button class="bchip" onclick="pickBudget(this,'10-20k')">10,000–20,000฿</button>
+        <button class="bchip" onclick="pickBudget(this,'20-35k')">20,000–35,000฿</button>
+        <button class="bchip" onclick="pickBudget(this,'>35k')" data-i="b4">มากกว่า 35,000฿</button>
+      </div>
+
+      <div class="field-label" data-i="fl_rating">ความสนใจโดยรวม</div>
+      <div class="stars-row" id="stars">
+        <button class="sstar" data-v="1" onclick="setRating(1)">★</button>
+        <button class="sstar" data-v="2" onclick="setRating(2)">★</button>
+        <button class="sstar" data-v="3" onclick="setRating(3)">★</button>
+        <button class="sstar" data-v="4" onclick="setRating(4)">★</button>
+        <button class="sstar" data-v="5" onclick="setRating(5)">★</button>
+      </div>
+
+      <div class="field-label" data-i="fl_name">ชื่อ</div>
+      <input class="field-input" id="f-name" type="text" data-placeholder-i="ph_name" placeholder="ชื่อ-นามสกุล" />
+
+      <div class="field-label" data-i="fl_contact">อีเมลหรือเบอร์โทร</div>
+      <input class="field-input" id="f-contact" type="text" data-placeholder-i="ph_contact" placeholder="email@example.com หรือ 08x-xxx-xxxx" />
+
+      <div class="field-label" data-i="fl_comment">ความคิดเห็น / ฟีเจอร์ที่อยากได้ (ไม่บังคับ)</div>
+      <textarea class="field-ta" id="f-comment" data-placeholder-i="ph_comment" placeholder="เช่น อยากให้เชื่อมกับ Apple Health, อยากได้ท่า Pull-up..."></textarea>
+
+      <div class="progress-section">
+        <div class="prog-row">
+          <span class="prog-count" id="prog-count">61 <span data-i="prog_label">คนสนใจแล้ว</span></span>
+          <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:12.2%"></div></div>
+          <span class="prog-target"><span data-i="prog_target">เป้า</span> 500 <span data-i="prog_unit">คน</span></span>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button class="btn-submit" id="btn-sub" onclick="submitForm()">
+          <i class="ti ti-send" aria-hidden="true"></i>
+          <span data-i="btn_submit">ส่งความสนใจ</span>
+        </button>
+        <button class="btn-share" onclick="shareIt()">
+          <i class="ti ti-share" aria-hidden="true"></i>
+          <span data-i="btn_share">แชร์</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="success-view">
+      <div class="success-ring"><i class="ti ti-check" aria-hidden="true"></i></div>
+      <div class="success-title" data-i="suc_title">ขอบคุณ!</div>
+      <p class="success-sub" data-i="suc_sub">เราได้รับความสนใจของคุณแล้ว<br>จะแจ้งข่าวสารให้ทราบเป็นคนแรกเมื่อ FlexBot One พร้อม</p>
+      <div class="summary-box" id="summary-box"></div>
+      <button class="btn-ghost" style="margin:0 auto" onclick="resetF()">
+        <i class="ti ti-refresh" aria-hidden="true"></i> <span data-i="btn_again">ส่งอีกครั้ง</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">FLEX<span>BOT</span> ONE</div>
+  <div data-i="footer_copy">© 2025 FlexBot — Smart Fitness for Urban Thailand</div>
+  <div>Bangkok, Thailand</div>
+</footer>
+
+<script>
+const T = {
+  th: {
+    nav_features:'ฟีเจอร์', nav_how:'วิธีใช้งาน', nav_compare:'เปรียบเทียบ', nav_register:'แจ้งความสนใจ', nav_cta:'แจ้งความสนใจ',
+    hero_tag:'Early Access — ประเทศไทย 2568',
+    hero_desc:'ออกกำลังกายแบบ AI Personal Trainer พร้อม Motor Haptic Resistance สูงสุด 120 lbs — ออกแบบสำหรับคอนโดและอพาร์ตเมนต์ในประเทศไทย',
+    hero_cta:'แจ้งความสนใจ Early Access', hero_watch:'ดูวิธีทำงาน',
+    stat1:'แรงต้านสูงสุด', stat2:'Personal Coach', stat3:'พื้นที่ที่ใช้',
+    fs1t:'Motor-Haptic Resistance', fs1s:'ปรับแรงต้านแม่นยำทุก Rep',
+    fs2t:'AI Personal Trainer', fs2s:'วิเคราะห์และปรับโปรแกรมให้คุณ',
+    fs3t:'Real-time Analytics', fs3s:'ติดตามพัฒนาการทุกเซสชัน',
+    fs4t:'Condo-First Design', fs4s:'ใช้พื้นที่เพียง 0.5 ตร.ม.',
+    fs5t:'Energy Recovery', fs5s:'แปลงพลังงานกลับเป็นไฟฟ้า',
+    prob_eye:'ปัญหาที่เราแก้',
+    prob_title:'คนเมืองไทยออกกำลังกายได้<em>ยากขึ้น</em>ทุกปี',
+    prob_body:'พื้นที่คอนโดเล็กลง ค่าฟิตเนสแพงขึ้น อุปกรณ์ Smart Fitness จากต่างประเทศไม่ตอบโจทย์คนไทย — FlexBot One คือคำตอบที่ออกแบบมาเพื่อคุณ',
+    p1t:'พื้นที่จำกัด', p1d:'คอนโดและอพาร์ตเมนต์ไม่มีพื้นที่สำหรับอุปกรณ์ออกกำลังกายขนาดใหญ่',
+    p2t:'เวลาไม่พอ', p2d:'คนทำงานไม่มีเวลาไปฟิตเนส การออกกำลังกายที่บ้านจึงเป็นทางเลือกเดียว',
+    p3t:'ขาดผู้แนะนำ', p3d:'ผู้เริ่มต้นไม่มั่นใจ ไม่รู้วิธีฝึกที่ถูกต้อง และไม่สามารถวัดผลได้',
+    p4t:'ราคาสูงเกินไป', p4d:'Tonal / Speediance ราคาแพงมาก ไม่ตอบโจทย์ตลาดไทยและไม่ได้ออกแบบสำหรับเอเชีย',
+    how_eye:'วิธีทำงาน', how_title:'เทคโนโลยีที่<em>ปรับตัว</em>ตามคุณ',
+    s1t:'ตั้งค่าโปรไฟล์', s1d:'AI ประเมินระดับฟิตเนสเริ่มต้นของคุณ และสร้างโปรแกรมการฝึกส่วนตัว',
+    s2t:'เชื่อมสาย ออกกำลังกาย', s2d:'Motor ปรับแรงต้านแบบ Real-time ตามท่าทางและความสามารถของคุณในขณะนั้น',
+    s3t:'วิเคราะห์ผล', s3d:'หน้าจอแสดง Rep, แรงต้าน, Calories และพลังงานที่ผลิตได้แบบ Live',
+    s4t:'ปรับโปรแกรมอัตโนมัติ', s4d:'AI เรียนรู้จากข้อมูลการฝึกและอัปเดตโปรแกรมใหม่ทุกสัปดาห์',
+    cmp_eye:'เปรียบเทียบ', cmp_title:'ทำไมต้อง<em>FlexBot One</em>?',
+    cmp_h1:'ฟีเจอร์', cmp_h2:'ฟิตเนสทั่วไป',
+    cr1:'เหมาะกับคอนโด', cr2:'AI Personal Trainer', cr3:'ราคาเข้าถึงได้', cr4:'รองรับภาษาไทย', cr5:'Energy Recovery',
+    form_title:'แจ้งความสนใจ<br><em>รับข่าวสารก่อนใคร</em>',
+    form_sub:'กรอกข้อมูลด้านล่าง ทีมงานจะติดต่อกลับเมื่อ FlexBot One พร้อมจำหน่ายในประเทศไทย',
+    fl_interest:'คุณสนใจด้านไหนมากที่สุด?', fl_budget:'งบประมาณที่พิจารณา', fl_rating:'ความสนใจโดยรวม',
+    fl_name:'ชื่อ', fl_contact:'อีเมลหรือเบอร์โทร', fl_comment:'ความคิดเห็น / ฟีเจอร์ที่อยากได้ (ไม่บังคับ)',
+    ph_name:'ชื่อ-นามสกุล', ph_contact:'email@example.com หรือ 08x-xxx-xxxx', ph_comment:'เช่น อยากให้เชื่อมกับ Apple Health...',
+    ib1t:'ประหยัดพื้นที่', ib1s:'เหมาะกับคอนโด', ib2t:'AI Trainer', ib2s:'ปรับโปรแกรมอัตโนมัติ',
+    ib3t:'Smart Resistance', ib3s:'120 lbs Motor Haptic', ib4t:'ติดตามผลลัพธ์', ib4s:'วิเคราะห์ Realtime',
+    b1:'ต่ำกว่า 10,000฿', b4:'มากกว่า 35,000฿',
+    prog_label:'คนสนใจแล้ว', prog_target:'เป้า', prog_unit:'คน',
+    btn_submit:'ส่งความสนใจ', btn_share:'แชร์', btn_again:'ส่งอีกครั้ง',
+    suc_title:'ขอบคุณ!', suc_sub:'เราได้รับความสนใจของคุณแล้ว<br>จะแจ้งข่าวสารให้ทราบเป็นคนแรกเมื่อ FlexBot One พร้อม',
+    footer_copy:'© 2025 FlexBot — Smart Fitness สำหรับคนเมืองไทย',
+    iLabels:{ space:'ประหยัดพื้นที่', ai:'AI Trainer', resistance:'Smart Resistance', tracking:'ติดตามผล' },
+    bLabels:{ '<10k':'ต่ำกว่า 10,000฿','10-20k':'10,000–20,000฿','20-35k':'20,000–35,000฿','>35k':'มากกว่า 35,000฿' },
+    submitting:'กำลังส่ง...'
+  },
+  en: {
+    nav_features:'Features', nav_how:'How it Works', nav_compare:'Compare', nav_register:'Register Interest', nav_cta:'Register Interest',
+    hero_tag:'Early Access — Thailand 2025',
+    hero_desc:'Your AI Personal Trainer with Motor Haptic Resistance up to 120 lbs — purpose-built for condos and apartments across Thailand.',
+    hero_cta:'Register Early Access', hero_watch:'See How It Works',
+    stat1:'Max Resistance', stat2:'Personal Coach', stat3:'Floor Space',
+    fs1t:'Motor-Haptic Resistance', fs1s:'Precise resistance per rep',
+    fs2t:'AI Personal Trainer', fs2s:'Analyzes & adapts your program',
+    fs3t:'Real-time Analytics', fs3s:'Track progress every session',
+    fs4t:'Condo-First Design', fs4s:'Only 0.5 m² of floor space',
+    fs5t:'Energy Recovery', fs5s:'Converts effort back to power',
+    prob_eye:'The Problem We Solve',
+    prob_title:'Urban Thais find fitness <em>harder</em> every year',
+    prob_body:'Smaller condos, rising gym fees, and foreign smart-fitness products that don\'t fit Thai lifestyles — FlexBot One was designed specifically for you.',
+    p1t:'Limited Space', p1d:'Condos and apartments leave no room for traditional fitness equipment.',
+    p2t:'No Time', p2d:'Working professionals can\'t make it to the gym. Home fitness is the only option.',
+    p3t:'No Guidance', p3d:'Beginners lack confidence, correct form knowledge, and ways to track progress.',
+    p4t:'Too Expensive', p4d:'Tonal and Speediance cost a fortune and weren\'t designed for Asian homes.',
+    how_eye:'How It Works', how_title:'Technology that <em>adapts</em> to you',
+    s1t:'Set Up Your Profile', s1d:'AI assesses your baseline fitness level and builds a personal training program.',
+    s2t:'Attach & Train', s2d:'The motor adjusts resistance in real-time based on your form and capability.',
+    s3t:'Track Your Results', s3d:'The screen shows live reps, resistance, calories, and energy generated.',
+    s4t:'Auto-adjust Program', s4d:'AI learns from your training data and updates your program weekly.',
+    cmp_eye:'Comparison', cmp_title:'Why <em>FlexBot One</em>?',
+    cmp_h1:'Feature', cmp_h2:'Regular Gym',
+    cr1:'Condo-friendly', cr2:'AI Personal Trainer', cr3:'Affordable price', cr4:'Thai language support', cr5:'Energy recovery',
+    form_title:'Register Your Interest<br><em>Be first in line</em>',
+    form_sub:'Fill in the form below and we\'ll reach out as soon as FlexBot One is available in Thailand.',
+    fl_interest:'What interests you most?', fl_budget:'Your budget range', fl_rating:'Overall interest level',
+    fl_name:'Full name', fl_contact:'Email or phone number', fl_comment:'Comments / features you want (optional)',
+    ph_name:'Your full name', ph_contact:'email@example.com or +66 8x-xxx-xxxx', ph_comment:'e.g. Apple Health integration, more exercise types...',
+    ib1t:'Space saving', ib1s:'Perfect for condos', ib2t:'AI Trainer', ib2s:'Auto-adjusts your program',
+    ib3t:'Smart Resistance', ib3s:'120 lbs Motor Haptic', ib4t:'Progress tracking', ib4s:'Real-time analytics',
+    b1:'Under 10,000฿', b4:'Over 35,000฿',
+    prog_label:'people interested', prog_target:'Goal:', prog_unit:'people',
+    btn_submit:'Submit Interest', btn_share:'Share', btn_again:'Submit again',
+    suc_title:'Thank you!', suc_sub:'We\'ve received your interest.<br>You\'ll be among the first to hear when FlexBot One is ready.',
+    footer_copy:'© 2025 FlexBot — Smart Fitness for Urban Thailand',
+    iLabels:{ space:'Space saving', ai:'AI Trainer', resistance:'Smart Resistance', tracking:'Progress tracking' },
+    bLabels:{ '<10k':'Under 10,000฿','10-20k':'10,000–20,000฿','20-35k':'20,000–35,000฿','>35k':'Over 35,000฿' },
+    submitting:'Sending...'
+  }
+};
+
+let lang = 'th';
+let interests = [], budget = '', rating = 0, count = 61;
+const SHEET_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().includes(l.toUpperCase())));
+  document.documentElement.lang = l;
+  const d = T[l];
+  document.querySelectorAll('[data-i]').forEach(el => {
+    const key = el.getAttribute('data-i');
+    if (d[key] !== undefined) el.innerHTML = d[key];
+  });
+  document.querySelectorAll('[data-placeholder-i]').forEach(el => {
+    const key = el.getAttribute('data-placeholder-i');
+    if (d[key]) el.placeholder = d[key];
+  });
+  // update counter text
+  const pc = document.getElementById('prog-count');
+  if (pc) pc.innerHTML = count + ' <span data-i="prog_label">' + d.prog_label + '</span>';
+  // re-apply btn state
+  const btn = document.getElementById('btn-sub');
+  if (btn && !btn.disabled) btn.innerHTML = '<i class="ti ti-send" aria-hidden="true"></i> ' + d.btn_submit;
+}
+
+function toggleInt(btn, val) {
+  btn.classList.toggle('selected');
+  interests = interests.includes(val) ? interests.filter(v => v !== val) : [...interests, val];
+}
+function pickBudget(btn, val) {
+  document.querySelectorAll('.bchip').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel'); budget = val;
+}
+function setRating(v) {
+  rating = v;
+  document.querySelectorAll('.sstar').forEach(s => s.classList.toggle('lit', parseInt(s.dataset.v) <= v));
+}
+
+async function submitForm() {
+  const btn = document.getElementById('btn-sub');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader" aria-hidden="true"></i> ' + T[lang].submitting;
+  const payload = {
+    name: document.getElementById('f-name').value.trim(),
+    contact: document.getElementById('f-contact').value.trim(),
+    interests, budget, rating, lang,
+    comment: document.getElementById('f-comment').value.trim()
+  };
+  if (SHEET_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+    try {
+      await fetch(SHEET_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    } catch(e) { console.error(e); }
+  }
+  count++;
+  document.getElementById('prog-count').innerHTML = count + ' <span data-i="prog_label">' + T[lang].prog_label + '</span>';
+  document.getElementById('prog-fill').style.width = Math.min((count/500)*100,100) + '%';
+  const d = T[lang], iL = d.iLabels, bL = d.bLabels;
+  const lines = [];
+  if (payload.name) lines.push(['ti-user',(lang==='th'?'ชื่อ':'Name')+': '+payload.name]);
+  if (payload.contact) lines.push(['ti-mail',(lang==='th'?'ติดต่อ':'Contact')+': '+payload.contact]);
+  if (interests.length) lines.push(['ti-heart',(lang==='th'?'สนใจ':'Interests')+': '+interests.map(k=>iL[k]).join(', ')]);
+  if (budget) lines.push(['ti-currency-baht',(lang==='th'?'งบ':'Budget')+': '+bL[budget]]);
+  if (rating) lines.push(['ti-star',(lang==='th'?'คะแนน':'Rating')+': '+'★'.repeat(rating)]);
+  document.getElementById('summary-box').innerHTML = lines.map(([ic,tx])=>`<div class="summary-item"><i class="ti ${ic}" aria-hidden="true"></i><span>${tx}</span></div>`).join('');
+  document.getElementById('form-view').style.display = 'none';
+  const sv = document.getElementById('success-view');
+  sv.style.display = 'block';
+  sv.querySelector('.success-title').innerHTML = d.suc_title;
+  sv.querySelector('.success-sub').innerHTML = d.suc_sub;
+}
+
+function resetF() {
+  document.getElementById('form-view').style.display = 'block';
+  document.getElementById('success-view').style.display = 'none';
+  const btn = document.getElementById('btn-sub');
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-send" aria-hidden="true"></i> ' + T[lang].btn_submit;
+}
+
+function shareIt() {
+  count++;
+  document.getElementById('prog-count').innerHTML = count + ' <span data-i="prog_label">' + T[lang].prog_label + '</span>';
+  if (navigator.share) navigator.share({ title:'FlexBot One', text: lang==='th' ? 'Smart Fitness สำหรับคนคอนโด — AI Trainer + Motor Resistance ในกล่องเดียว!' : 'Smart Fitness for condo living — AI Trainer + Motor Resistance in one device!' });
+}
+
+const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
 </html>

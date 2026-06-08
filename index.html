@@ -595,22 +595,11 @@ const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwswZW086NFiBK4jSPKwu
 
 // Fetch real count from Google Sheets on page load
 async function fetchCount() {
-  if (SHEET_URL === 'https://script.google.com/macros/s/AKfycbwswZW086NFiBK4jSPKwuKj1OorzXWv8bDi_ZcvPW0KPmFXPYdZouqE2ItXa6FaHuAd/exec') {
-    count = 61; // placeholder while URL not set
-    renderCount();
-    return;
-  }
   try {
-    const res = await fetch(SHEET_URL, { method: 'GET' });
+    const res = await fetch(SHEET_URL);
     const data = await res.json();
-    if (data.status === 'ok') {
-      count = data.count;
-      renderCount();
-    }
-  } catch (e) {
-    count = 61;
-    renderCount();
-  }
+    if (data.status === 'ok') { count = data.count; renderCount(); }
+  } catch (e) { count = 0; renderCount(); }
 }
 
 function renderCount() {
@@ -666,24 +655,21 @@ async function submitForm() {
 
   let newCount = count + 1;
 
-  if (SHEET_URL !== 'https://script.google.com/macros/s/AKfycbwswZW086NFiBK4jSPKwuKj1OorzXWv8bDi_ZcvPW0KPmFXPYdZouqE2ItXa6FaHuAd/exec') {
-    try {
-      // Send as GET with URLSearchParams — no CORS preflight, body never stripped
-      const params = new URLSearchParams({
-        action:    'submit',
-        name:      payload.name,
-        contact:   payload.contact,
-        interests: payload.interests.join(','),
-        budget:    payload.budget,
-        rating:    String(payload.rating),
-        lang:      payload.lang,
-        comment:   payload.comment
-      });
-      const res = await fetch(SHEET_URL + '?' + params.toString());
-      const d2  = await res.json();
-      if (d2.status === 'ok') { count = d2.count; renderCount(); }
-    } catch (e) { console.error('Sheet error:', e); }
-  }
+  try {
+    const params = new URLSearchParams({
+      action:    'submit',
+      name:      payload.name,
+      contact:   payload.contact,
+      interests: payload.interests.join(','),
+      budget:    payload.budget,
+      rating:    String(payload.rating),
+      lang:      payload.lang,
+      comment:   payload.comment
+    });
+    const res = await fetch(SHEET_URL + '?' + params.toString());
+    const d2  = await res.json();
+    if (d2.status === 'ok') { count = d2.count; renderCount(); }
+  } catch (e) { console.error('Sheet error:', e); }
 
   count = newCount;
   renderCount();

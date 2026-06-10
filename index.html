@@ -205,6 +205,136 @@
   /* LANG TRANSITION */
   [data-th], [data-en] { transition: opacity 0.25s ease; }
 
+
+  /* GAMIFICATION SECTION */
+  .game-section { background: var(--bg); border-top: 0.5px solid var(--border); }
+  .game-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; }
+
+  .game-split {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    margin-bottom: 4rem;
+  }
+  .game-split.reverse { direction: rtl; }
+  .game-split.reverse > * { direction: ltr; }
+
+  .game-tagline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
+  }
+  .game-tagline em { font-style: normal; color: var(--gold); }
+
+  .game-body { font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 1.5rem; }
+
+  /* Animated game screen */
+  .game-screen {
+    border-radius: var(--r-lg);
+    background: #0d1117;
+    border: 0.5px solid rgba(239,159,39,0.25);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .game-screen::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(239,159,39,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .game-screen-bar {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  }
+  .gsb-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .gsb-title { font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-left: 4px; }
+  .game-world {
+    border-radius: var(--r-sm);
+    background: linear-gradient(160deg, #0f1f0f 0%, #1a0f00 50%, #0f0f1a 100%);
+    padding: 1.5rem 1.25rem;
+    position: relative; min-height: 180px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .gw-scene {
+    position: absolute; top: 1rem; left: 50%; transform: translateX(-50%);
+    font-size: 52px; animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(239,159,39,0.4));
+  }
+  @keyframes float { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-8px)} }
+  .gw-action {
+    background: rgba(239,159,39,0.12); border: 0.5px solid var(--gold-border);
+    border-radius: 6px; padding: 8px 12px; display: flex; align-items: center; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .gw-action-icon { font-size: 16px; color: var(--gold); }
+  .gw-action-text { font-size: 12px; }
+  .gw-action-text strong { display: block; color: var(--text); font-size: 13px; }
+  .gw-action-text span { color: var(--text-muted); }
+  .gw-bar-wrap { margin-top: 8px; }
+  .gw-bar-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .gw-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; }
+  .gw-bar-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #EF9F27, #FAC775); animation: fill-anim 2.5s ease-in-out infinite alternate; }
+  @keyframes fill-anim { from{width:35%} to{width:82%} }
+
+  /* Quest cards */
+  .quest-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;
+    margin-top: 2rem;
+  }
+  .quest-card {
+    background: var(--bg-2); border: 0.5px solid var(--border);
+    border-radius: var(--r-md); padding: 1.25rem 1rem;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: default;
+  }
+  .quest-card:hover { border-color: var(--gold-border); background: var(--gold-dim); }
+  .quest-emoji { font-size: 28px; margin-bottom: 10px; display: block; }
+  .quest-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .quest-muscle { font-size: 11px; color: var(--text-muted); }
+  .quest-xp {
+    display: inline-block; margin-top: 8px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+    background: var(--gold-dim); border: 0.5px solid var(--gold-border);
+    color: var(--gold); padding: 2px 8px; border-radius: 4px;
+  }
+
+  /* Motivation banner */
+  .motive-banner {
+    margin-top: 4rem;
+    background: linear-gradient(135deg, rgba(239,159,39,0.08) 0%, rgba(239,159,39,0.03) 100%);
+    border: 0.5px solid var(--gold-border);
+    border-radius: var(--r-lg);
+    padding: 2.5rem 2rem;
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 2rem; align-items: center;
+  }
+  .motive-icon { font-size: 48px; }
+  .motive-quote {
+    font-family: 'Syne', sans-serif; font-size: clamp(18px, 3vw, 26px); font-weight: 800;
+    line-height: 1.3; color: var(--text);
+  }
+  .motive-quote em { font-style: normal; color: var(--gold); }
+  .motive-sub { font-size: 13px; color: var(--text-muted); margin-top: 8px; line-height: 1.6; }
+
+  /* Tech stack pills */
+  .tech-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.25rem; }
+  .tech-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.04); border: 0.5px solid var(--border);
+    border-radius: 100px; padding: 6px 14px; font-size: 12px; color: var(--text-muted);
+  }
+  .tech-pill i { color: var(--gold); font-size: 14px; }
+
+  @media (max-width: 768px) {
+    .game-split { grid-template-columns: 1fr; gap: 2rem; }
+    .game-split.reverse { direction: ltr; }
+    .motive-banner { grid-template-columns: 1fr; text-align: center; }
+    .motive-icon { display: none; }
+    .game-inner { padding: 3rem 1.25rem; }
+  }
   @media (max-width: 768px) {
     nav { padding: 0 1.25rem; }
     .nav-links { display: none; }
@@ -228,6 +358,7 @@
     <a href="#features" data-i="nav_features">ฟีเจอร์</a>
     <a href="#howto" data-i="nav_how">วิธีใช้งาน</a>
     <a href="#compare" data-i="nav_compare">เปรียบเทียบ</a>
+    <a href="#gamification" data-i="nav_game">Game Mode</a>
     <a href="#feedback" data-i="nav_register">แจ้งความสนใจ</a>
   </div>
   <div class="nav-right">
@@ -341,7 +472,7 @@
       <div class="problem-card">
         <div class="prob-icon"><i class="ti ti-currency-baht" aria-hidden="true"></i></div>
         <div class="prob-title" data-i="p4t">ราคาสูงเกินไป</div>
-        <div class="prob-desc" data-i="p4d">Tonal / Speediance ราคาแพงมาก ไม่ตอบโจทย์ตลาดไทยและไม่ได้ออกแบบสำหรับเอเชีย</div>
+        <div class="prob-desc" data-i="p4d">อุปกรณ์ Smart Fitness นำเข้าจากต่างประเทศมีราคาสูง</div>
       </div>
     </div>
   </div>
@@ -377,6 +508,100 @@
   </div>
 </section>
 
+<!-- GAMIFICATION SECTION -->
+<section class="game-section fade-up" id="gamification">
+  <div class="game-inner">
+
+    <div style="text-align:center; margin-bottom: 3.5rem;">
+      <div class="section-eyebrow" data-i="gm_eye" style="justify-content:center; display:flex;">Fitness × Gaming</div>
+      <h2 class="section-title" data-i="gm_title" style="max-width:700px; margin: 0.75rem auto 1rem;">เปลี่ยนการออกกำลังกาย<br>ให้กลายเป็น<em>เกมที่คุณชอบเล่น</em></h2>
+      <p class="section-body" data-i="gm_body" style="max-width:600px; margin: 0 auto;">ปัญหาที่แท้จริงของการออกกำลังกายไม่ใช่การขาดอุปกรณ์ — แต่เป็นการขาดแรงจูงใจ FlexBot One ผสาน Robotics, AI และ Game Design เพื่อเปลี่ยนทุก Rep ให้กลายเป็นการผจญภัย</p>
+    </div>
+
+    <!-- SPLIT: concept left, screen right -->
+    <div class="game-split">
+      <div>
+        <div class="section-eyebrow" data-i="gm_s1eye">ร่างกายคือตัวควบคุม</div>
+        <div class="game-tagline" data-i="gm_s1title">แรงจริง<br><em>ผลลัพธ์จริง</em><br>ในโลกเกม</div>
+        <p class="game-body" data-i="gm_s1body">ทุกการดึง ผลัก ยก และแบกในโลกจริง จะถูกแปลงเป็นการกระทำภายในเกมแบบ Real-time ผ่าน Motor Sensor — คุณไม่ได้กด joystick แต่ใช้กล้ามเนื้อควบคุมตัวละคร</p>
+        <div class="tech-row">
+          <span class="tech-pill"><i class="ti ti-cpu" aria-hidden="true"></i> <span data-i="tp1">Robotics</span></span>
+          <span class="tech-pill"><i class="ti ti-brain" aria-hidden="true"></i> <span data-i="tp2">AI Engine</span></span>
+          <span class="tech-pill"><i class="ti ti-device-gamepad-2" aria-hidden="true"></i> <span data-i="tp3">Game Design</span></span>
+          <span class="tech-pill"><i class="ti ti-activity" aria-hidden="true"></i> <span data-i="tp4">Sports Science</span></span>
+        </div>
+      </div>
+      <div class="game-screen">
+        <div class="game-screen-bar">
+          <div class="gsb-dot" style="background:#ef4444"></div>
+          <div class="gsb-dot" style="background:#f59e0b"></div>
+          <div class="gsb-dot" style="background:#22c55e"></div>
+          <div class="gsb-title" data-i="gm_screen_title">FlexBot Quest — Live Session</div>
+        </div>
+        <div class="game-world">
+          <div class="gw-scene">⚔️</div>
+          <div class="gw-action">
+            <div class="gw-action-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+            <div class="gw-action-text">
+              <strong data-i="gm_action1_t">ต่อสู้กับบอส — ด่าน 3</strong>
+              <span data-i="gm_action1_s">ออกแรงดึง → ตัวละครโจมตี</span>
+            </div>
+          </div>
+          <div class="gw-bar-wrap">
+            <div class="gw-bar-label"><span data-i="gm_power">พลังงาน</span><span id="pct-label">—</span></div>
+            <div class="gw-bar"><div class="gw-bar-fill" id="gw-fill"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUEST GRID -->
+    <div class="section-eyebrow" data-i="gm_quest_eye" style="margin-bottom: 1rem;">ภารกิจตัวอย่าง</div>
+    <div class="quest-grid">
+      <div class="quest-card">
+        <span class="quest-emoji">🏕️</span>
+        <div class="quest-name" data-i="q1n">แบกเสบียงช่วยหมู่บ้าน</div>
+        <div class="quest-muscle" data-i="q1m">หลัง · ไหล่ · Core</div>
+        <div class="quest-xp">+250 XP</div>
+      </div>
+      <div class="quest-card">
+        <span class="quest-emoji">🚗</span>
+        <div class="quest-name" data-i="q2n">ลากรถหนีภัยพิบัติ</div>
+        <div class="quest-muscle" data-i="q2m">ขา · หลัง · แขน</div>
+        <div class="quest-xp">+400 XP</div>
+      </div>
+      <div class="quest-card">
+        <span class="quest-emoji">⛰️</span>
+        <div class="quest-name" data-i="q3n">ปีนภูเขาค้นหาสมบัติ</div>
+        <div class="quest-muscle" data-i="q3m">แขน · ไหล่ · Core</div>
+        <div class="quest-xp">+350 XP</div>
+      </div>
+      <div class="quest-card">
+        <span class="quest-emoji">🚪</span>
+        <div class="quest-name" data-i="q4n">ผลักประตูยักษ์ผ่านด่าน</div>
+        <div class="quest-muscle" data-i="q4m">อก · ไหล่ · ขา</div>
+        <div class="quest-xp">+300 XP</div>
+      </div>
+      <div class="quest-card">
+        <span class="quest-emoji">🐉</span>
+        <div class="quest-name" data-i="q5n">ต่อสู้บอสด้วยแรงจริง</div>
+        <div class="quest-muscle" data-i="q5m">Full Body</div>
+        <div class="quest-xp">+600 XP</div>
+      </div>
+    </div>
+
+    <!-- MOTIVATION BANNER -->
+    <div class="motive-banner">
+      <div class="motive-icon">🎮</div>
+      <div>
+        <div class="motive-quote" data-i="gm_motive">ออกแรงในโลกจริง<br><em>ตัวละครของคุณแข็งแกร่งขึ้น</em></div>
+        <div class="motive-sub" data-i="gm_motive_sub">ทุกภารกิจออกแบบตามหลักวิทยาศาสตร์การกีฬา — คุณได้สุขภาพดีและความสนุกในเวลาเดียวกัน</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- COMPARISON -->
 <section class="fade-up" id="compare">
   <div class="section-wrap">
@@ -387,7 +612,7 @@
         <tr>
           <th data-i="cmp_h1">ฟีเจอร์</th>
           <th data-i="cmp_h2">ฟิตเนสทั่วไป</th>
-          <th>Tonal / Speediance</th>
+          <th data-i="cmp_h3">อุปกรณ์ Smart Fitness ทั่วไป</th>
           <th class="highlight">FlexBot One</th>
         </tr>
       </thead>
@@ -395,8 +620,8 @@
         <tr><td data-i="cr1">เหมาะกับคอนโด</td><td class="cross">✗</td><td class="cross">✗</td><td class="highlight check">✓</td></tr>
         <tr><td data-i="cr2">AI Personal Trainer</td><td class="cross">✗</td><td class="check">✓</td><td class="highlight check">✓</td></tr>
         <tr><td data-i="cr3">ราคาเข้าถึงได้</td><td class="check">✓</td><td class="cross">✗</td><td class="highlight check">✓</td></tr>
-        <tr><td data-i="cr4">รองรับภาษาไทย</td><td class="cross">✗</td><td class="cross">✗</td><td class="highlight check">✓</td></tr>
-        <tr><td data-i="cr5">Energy Recovery</td><td class="cross">✗</td><td class="cross">✗</td><td class="highlight check">✓</td></tr>
+        <tr><td data-i="cr4">Game-based Motivation</td><td class="cross">✗</td><td class="cross">✗</td><td class="highlight check">✓</td></tr>
+        <tr><td data-i="cr5">ปรับแรงต้านตามผู้ใช้แบบ Real-time</td><td class="cross">✗</td><td class="cross">✗</td><td class="highlight check">✓</td></tr>
       </tbody>
     </table>
   </div>
@@ -517,15 +742,15 @@ const T = {
     p1t:'พื้นที่จำกัด', p1d:'คอนโดและอพาร์ตเมนต์ไม่มีพื้นที่สำหรับอุปกรณ์ออกกำลังกายขนาดใหญ่',
     p2t:'เวลาไม่พอ', p2d:'คนทำงานไม่มีเวลาไปฟิตเนส การออกกำลังกายที่บ้านจึงเป็นทางเลือกเดียว',
     p3t:'ขาดผู้แนะนำ', p3d:'ผู้เริ่มต้นไม่มั่นใจ ไม่รู้วิธีฝึกที่ถูกต้อง และไม่สามารถวัดผลได้',
-    p4t:'ราคาสูงเกินไป', p4d:'Tonal / Speediance ราคาแพงมาก ไม่ตอบโจทย์ตลาดไทยและไม่ได้ออกแบบสำหรับเอเชีย',
+    p4t:'ราคาสูงเกินไป', p4d:'อุปกรณ์ Smart Fitness นำเข้าจากต่างประเทศมีราคาสูง',
     how_eye:'วิธีทำงาน', how_title:'เทคโนโลยีที่<em>ปรับตัว</em>ตามคุณ',
     s1t:'ตั้งค่าโปรไฟล์', s1d:'AI ประเมินระดับฟิตเนสเริ่มต้นของคุณ และสร้างโปรแกรมการฝึกส่วนตัว',
     s2t:'เชื่อมสาย ออกกำลังกาย', s2d:'Motor ปรับแรงต้านแบบ Real-time ตามท่าทางและความสามารถของคุณในขณะนั้น',
     s3t:'วิเคราะห์ผล', s3d:'หน้าจอแสดง Rep, แรงต้าน, Calories และพลังงานที่ผลิตได้แบบ Live',
     s4t:'ปรับโปรแกรมอัตโนมัติ', s4d:'AI เรียนรู้จากข้อมูลการฝึกและอัปเดตโปรแกรมใหม่ทุกสัปดาห์',
     cmp_eye:'เปรียบเทียบ', cmp_title:'ทำไมต้อง<em>FlexBot One</em>?',
-    cmp_h1:'ฟีเจอร์', cmp_h2:'ฟิตเนสทั่วไป',
-    cr1:'เหมาะกับคอนโด', cr2:'AI Personal Trainer', cr3:'ราคาเข้าถึงได้', cr4:'รองรับภาษาไทย', cr5:'Energy Recovery',
+    cmp_h1:'ฟีเจอร์', cmp_h2:'ฟิตเนสทั่วไป', cmp_h3:'Smart Fitness ทั่วไป',
+    cr1:'เหมาะกับคอนโด', cr2:'AI Personal Trainer', cr3:'ราคาเข้าถึงได้', cr4:'Game-based Motivation', cr5:'ปรับแรงต้านตามผู้ใช้ Real-time',
     form_title:'แจ้งความสนใจ<br><em>รับข่าวสารก่อนใคร</em>',
     form_sub:'กรอกข้อมูลด้านล่าง ทีมงานจะติดต่อกลับเมื่อ FlexBot One พร้อมจำหน่ายในประเทศไทย',
     fl_interest:'คุณสนใจด้านไหนมากที่สุด?', fl_budget:'งบประมาณที่พิจารณา', fl_rating:'ความสนใจโดยรวม',
@@ -540,7 +765,26 @@ const T = {
     footer_copy:'© 2025 FlexBot — Smart Fitness สำหรับคนเมืองไทย',
     iLabels:{ space:'ประหยัดพื้นที่', ai:'AI Trainer', resistance:'Smart Resistance', tracking:'ติดตามผล' },
     bLabels:{ '<10k':'ต่ำกว่า 10,000฿','10-20k':'10,000–20,000฿','20-35k':'20,000–35,000฿','>35k':'มากกว่า 35,000฿' },
-    submitting:'กำลังส่ง...'
+    submitting:'กำลังส่ง...',
+    nav_game:'Game Mode',
+    gm_eye:'Fitness × Gaming',
+    gm_title:'เปลี่ยนการออกกำลังกาย<br>ให้กลายเป็น<em>เกมที่คุณชอบเล่น</em>',
+    gm_body:'ปัญหาที่แท้จริงของการออกกำลังกายไม่ใช่การขาดอุปกรณ์ — แต่เป็นการขาดแรงจูงใจ FlexBot One ผสาน Robotics, AI และ Game Design เพื่อเปลี่ยนทุก Rep ให้กลายเป็นการผจญภัย',
+    gm_s1eye:'ร่างกายคือตัวควบคุม',
+    gm_s1title:'แรงจริง<br><em>ผลลัพธ์จริง</em><br>ในโลกเกม',
+    gm_s1body:'ทุกการดึง ผลัก ยก และแบกในโลกจริง จะถูกแปลงเป็นการกระทำภายในเกมแบบ Real-time ผ่าน Motor Sensor — คุณไม่ได้กด joystick แต่ใช้กล้ามเนื้อควบคุมตัวละคร',
+    tp1:'Robotics', tp2:'AI Engine', tp3:'Game Design', tp4:'Sports Science',
+    gm_screen_title:'FlexBot Quest — Live Session',
+    gm_action1_t:'ต่อสู้กับบอส — ด่าน 3', gm_action1_s:'ออกแรงดึง → ตัวละครโจมตี',
+    gm_power:'พลังงาน',
+    gm_quest_eye:'ภารกิจตัวอย่าง',
+    q1n:'แบกเสบียงช่วยหมู่บ้าน', q1m:'หลัง · ไหล่ · Core',
+    q2n:'ลากรถหนีภัยพิบัติ', q2m:'ขา · หลัง · แขน',
+    q3n:'ปีนภูเขาค้นหาสมบัติ', q3m:'แขน · ไหล่ · Core',
+    q4n:'ผลักประตูยักษ์ผ่านด่าน', q4m:'อก · ไหล่ · ขา',
+    q5n:'ต่อสู้บอสด้วยแรงจริง', q5m:'Full Body',
+    gm_motive:'ออกแรงในโลกจริง<br><em>ตัวละครของคุณแข็งแกร่งขึ้น</em>',
+    gm_motive_sub:'ทุกภารกิจออกแบบตามหลักวิทยาศาสตร์การกีฬา — คุณได้สุขภาพดีและความสนุกในเวลาเดียวกัน',
   },
   en: {
     nav_features:'Features', nav_how:'How it Works', nav_compare:'Compare', nav_register:'Register Interest', nav_cta:'Register Interest',
@@ -559,15 +803,15 @@ const T = {
     p1t:'Limited Space', p1d:'Condos and apartments leave no room for traditional fitness equipment.',
     p2t:'No Time', p2d:'Working professionals can\'t make it to the gym. Home fitness is the only option.',
     p3t:'No Guidance', p3d:'Beginners lack confidence, correct form knowledge, and ways to track progress.',
-    p4t:'Too Expensive', p4d:'Tonal and Speediance cost a fortune and weren\'t designed for Asian homes.',
+    p4t:'Too Expensive', p4d:'Imported smart fitness devices carry a high price tag that\'s out of reach for most people.',
     how_eye:'How It Works', how_title:'Technology that <em>adapts</em> to you',
     s1t:'Set Up Your Profile', s1d:'AI assesses your baseline fitness level and builds a personal training program.',
     s2t:'Attach & Train', s2d:'The motor adjusts resistance in real-time based on your form and capability.',
     s3t:'Track Your Results', s3d:'The screen shows live reps, resistance, calories, and energy generated.',
     s4t:'Auto-adjust Program', s4d:'AI learns from your training data and updates your program weekly.',
     cmp_eye:'Comparison', cmp_title:'Why <em>FlexBot One</em>?',
-    cmp_h1:'Feature', cmp_h2:'Regular Gym',
-    cr1:'Condo-friendly', cr2:'AI Personal Trainer', cr3:'Affordable price', cr4:'Thai language support', cr5:'Energy recovery',
+    cmp_h1:'Feature', cmp_h2:'Regular Gym', cmp_h3:'Other Smart Fitness',
+    cr1:'Condo-friendly', cr2:'AI Personal Trainer', cr3:'Affordable price', cr4:'Game-based Motivation', cr5:'Real-time adaptive resistance',
     form_title:'Register Your Interest<br><em>Be first in line</em>',
     form_sub:'Fill in the form below and we\'ll reach out as soon as FlexBot One is available in Thailand.',
     fl_interest:'What interests you most?', fl_budget:'Your budget range', fl_rating:'Overall interest level',
@@ -582,7 +826,26 @@ const T = {
     footer_copy:'© 2025 FlexBot — Smart Fitness for Urban Thailand',
     iLabels:{ space:'Space saving', ai:'AI Trainer', resistance:'Smart Resistance', tracking:'Progress tracking' },
     bLabels:{ '<10k':'Under 10,000฿','10-20k':'10,000–20,000฿','20-35k':'20,000–35,000฿','>35k':'Over 35,000฿' },
-    submitting:'Sending...'
+    submitting:'Sending...',
+    nav_game:'Game Mode',
+    gm_eye:'Fitness × Gaming',
+    gm_title:'Turn your workout<br>into a <em>game you actually love</em>',
+    gm_body:'The real problem with exercise isn\'t lack of equipment — it\'s lack of motivation. FlexBot One merges Robotics, AI, and Game Design to turn every rep into an adventure.',
+    gm_s1eye:'Your Body is the Controller',
+    gm_s1title:'Real Force<br><em>Real Results</em><br>In the Game World',
+    gm_s1body:'Every pull, push, lift, and carry in the real world is translated into in-game actions in real-time via Motor Sensors — you don\'t press a joystick, you use your muscles.',
+    tp1:'Robotics', tp2:'AI Engine', tp3:'Game Design', tp4:'Sports Science',
+    gm_screen_title:'FlexBot Quest — Live Session',
+    gm_action1_t:'Boss Battle — Stage 3', gm_action1_s:'Pull hard → Character attacks',
+    gm_power:'Power',
+    gm_quest_eye:'Sample Quests',
+    q1n:'Carry supplies to save the village', q1m:'Back · Shoulders · Core',
+    q2n:'Tow the car to escape disaster', q2m:'Legs · Back · Arms',
+    q3n:'Climb the mountain for treasure', q3m:'Arms · Shoulders · Core',
+    q4n:'Push the giant gate to pass the level', q4m:'Chest · Shoulders · Legs',
+    q5n:'Fight the boss with real strength', q5m:'Full Body',
+    gm_motive:'Push harder in the real world<br><em>your character grows stronger</em>',
+    gm_motive_sub:'Every quest is designed around sports science — you gain health and fun at the same time.',
   }
 };
 
@@ -715,6 +978,21 @@ document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
 
 // Init
 fetchCount();
+
+// Power bar live animation
+(function() {
+  let v = 35, dir = 1;
+  setInterval(() => {
+    v += dir * (Math.random() * 3 + 1);
+    if (v > 88) dir = -1;
+    if (v < 30) dir = 1;
+    const fill = document.getElementById('gw-fill');
+    const lbl  = document.getElementById('pct-label');
+    if (fill) fill.style.width = v.toFixed(0) + '%';
+    if (lbl)  lbl.textContent  = v.toFixed(0) + '%';
+  }, 120);
+})();
+
 </script>
 </body>
 </html>
